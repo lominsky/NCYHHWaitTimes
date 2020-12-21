@@ -37,6 +37,10 @@
 		.oneAndAHalf {
 			background-color: #F78D38;
 		}
+		.two {
+			background-color: #C85662;
+			color: #fff;
+		}
 
 		body {
 			text-align: center;
@@ -123,6 +127,8 @@
   			div.classList.add('one');
   		} else if(site.wait.indexOf("1.5-2 Hours") != -1) {
   			div.classList.add('oneAndAHalf');
+  		} else if(site.wait.indexOf("More Than 2 Hours") != -1) {
+  			div.classList.add('two');
   		}
   		div.append(title);
   		div.append(wait);
