@@ -110,17 +110,17 @@
   		if(site.reported != "Last Reported Time: ") {
   			reported.innerText = site.reported;
   		}
-  		if(site.wait == "Not Reported Yet") {
+  		if(site.wait.indexOf("Not Reported Yet") != -1) {
   			div.classList.add('notreported');
-  		} else if(site.wait == "No Wait Time") {
+  		} else if(site.wait.indexOf("No Wait Time") != -1) {
   			div.classList.add('nowait');
-  		} else if(site.wait == "0-30 Minutes") {
+  		} else if(site.wait.indexOf("0-30 Minutes") != -1) {
   			div.classList.add('zero');
-  		} else if(site.wait == "30-60 Minutes") {
+  		} else if(site.wait.indexOf("30-60 Minutes") != -1) {
   			div.classList.add('half');
-  		} else if(site.wait == "1-1.5 Hours") {
+  		} else if(site.wait.indexOf("1-1.5 Hours") != -1) {
   			div.classList.add('one');
-  		} else if(site.wait == "1.5-2 Hours") {
+  		} else if(site.wait.indexOf("1.5-2 Hours") != -1) {
   			div.classList.add('oneAndAHalf');
   		}
   		div.append(title);
