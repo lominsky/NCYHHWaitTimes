@@ -88,7 +88,7 @@
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 
-  let data = firebase.database().ref('/').on("value", snapshot => {
+  let data = firebase.database().ref('/current/').on("value", snapshot => {
   	let data = snapshot.val();
   	let datetime = document.getElementById("datetime");
   	datetime.innerText = data.datetime;
