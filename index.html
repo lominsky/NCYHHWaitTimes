@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  	<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
+
+	<style>
+		.grid-container {
+			display: grid;
+			grid-gap: 10px;
+			grid-template-columns: auto auto auto auto auto auto auto auto;
+		}
+
+		.grid-item {
+			background-color: #eee;
+			padding: 10px;
+			font-size: 18px;
+			text-align: center;
+		}
+
+		.notreported {
+			background-color: #FDFD84;
+		}
+		.nowait {
+			background-color: #8AE6B0;
+		}
+		.zero {
+			background-color: #FCDCC0;
+		}
+		.half {
+			background-color: #FAB982;
+		}
+		.one {
+			background-color: #F8A25B;
+		}
+		.oneAndAHalf {
+			background-color: #F78D38;
+		}
+
+		body {
+			text-align: center;
+		}
+
+		h4 {
+			margin-bottom: 0px;
+		}
+
+		h6 {
+			margin-top: 5px;
+		}
+
+		.title {
+			font-size: 8pt;
+			font-weight: bold;
+		}
+		.wait {
+			font-size: 9pt;
+		}
+		.reported {
+			font-size: 7pt;
+			font-weight: bold;
+		}
+	</style>
+</head>
+<body>
+	<h1>COVID-19 Testing Wait Time</h1>
+
+	<h3>This dashboard displays estimated wait times for NYC Health + Hospitals COVID-19 testing locations based on the information shared in <a href="https://hhinternet.blob.core.windows.net/wait-times/testing-wait-times.pdf">this pdf</a></h3>
+	<h4 id="datetime"></h4>
+	<h6 id="timestamp"></h6>
+
+	<div id="grid" class="grid-container"></div>
+	<p>*Asterisk indicates wait time may have changed since last reported.</p>
+</body>
+
+<script type="text/javascript">
+  var firebaseConfig = {
+    apiKey: "AIzaSyC2DkMEQ3M5MZ6XNQC2_7gcnF-hZjilfEw",
+    authDomain: "hh-wait-times.firebaseapp.com",
+    databaseURL: "https://hh-wait-times-default-rtdb.firebaseio.com",
+    projectId: "hh-wait-times",
+    storageBucket: "hh-wait-times.appspot.com",
+    messagingSenderId: "1099308435921",
+    appId: "1:1099308435921:web:0b70a87e24048dd82638f0"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  let data = firebase.database().ref('/').once("value", snapshot => {
+  	let data = snapshot.val();
+  	let datetime = document.getElementById("datetime");
+  	datetime.innerText = data.datetime;
+  	let ts = new Date(data.timestamp);
+  	let timestamp = document.getElementById("timestamp");
+  	timestamp.innerText = "Last Updated: " + ts.toString();
+  	let grid = document.getElementById("grid");
+  	for(let site of data.sites) {
+  		console.log(site);
+  		let div = document.createElement("div");
+  		div.classList.add('grid-item');
+  		let title = document.createElement("div");	
+  		title.classList.add('title');
+  		let wait = document.createElement("div");	
+  		wait.classList.add('wait');
+  		let reported = document.createElement("div");	
+  		reported.classList.add('reported');
+  		title.innerText = site.name;
+  		wait.innerText = site.wait;
+  		if(site.reported != "Last Reported Time: ") {
+  			reported.innerText = site.reported;
+  		}
+  		if(site.wait == "Not Reported Yet") {
+  			div.classList.add('notreported');
+  		} else if(site.wait == "No Wait Time") {
+  			div.classList.add('nowait');
+  		} else if(site.wait == "0-30 Minutes") {
+  			div.classList.add('zero');
+  		} else if(site.wait == "30-60 Minutes") {
+  			div.classList.add('half');
+  		} else if(site.wait == "1-1.5 Hours") {
+  			div.classList.add('one');
+  		} else if(site.wait == "1.5-2 Hours") {
+  			div.classList.add('oneAndAHalf');
+  		}
+  		div.append(title);
+  		div.append(wait);
+  		div.append(reported);
+  		grid.append(div);
+  	}
+  })
+</script>
+</html>
