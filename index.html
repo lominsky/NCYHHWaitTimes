@@ -95,6 +95,7 @@
   	let timestamp = document.getElementById("timestamp");
   	timestamp.innerText = "Last Updated: " + ts.toString();
   	let grid = document.getElementById("grid");
+  	grid.innerHTML = "";
   	for(let site of data.sites) {
   		console.log(site);
   		let div = document.createElement("div");
